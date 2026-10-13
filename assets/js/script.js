@@ -254,8 +254,6 @@ requestAnimationFrame(frame);
 
 /* ---------- Accept -> letter ---------- */
 $("acceptBtn").addEventListener("click", () => {
-  audio.currentTime = 123;
-  audio.play().catch(() => {});
   $("modal").classList.add("hidden");
   $("scene").classList.remove("hidden");
   $("to").textContent = "Dear " + CONFIG.recipient + ",";
@@ -276,21 +274,36 @@ $("acceptBtn").addEventListener("click", () => {
 
 const bgm = $("bgm");
 const START = 2 * 60 + 10; // 2:10
+let musicStarted = false;
 
 function playMusic() {
+  if (musicStarted || !bgm.paused) return; // already playing: leave it alone
+  musicStarted = true;
+
   const seekThenPlay = () => {
-    bgm.addEventListener("seeked", () => bgm.play().catch(() => {}), {
-      once: true,
-    });
+    bgm.addEventListener(
+      "seeked",
+      () =>
+        bgm.play().catch(() => {
+          musicStarted = false;
+        }),
+      { once: true },
+    );
     bgm.currentTime = START;
   };
   bgm.readyState >= 3
     ? seekThenPlay()
     : bgm.addEventListener("canplay", seekThenPlay, { once: true });
-  bgm.load(); // starts buffering if the file hasn't loaded yet
 }
 
 bgm.addEventListener("ended", () => {
   bgm.currentTime = START;
   bgm.play();
-}); // loop back to 2:10
+});
+
+$("acceptBtn").addEventListener("click", () => {
+  playMusic();
+  $("modal").classList.add("hidden");
+  $("scene").classList.remove("hidden");
+  // ...your existing letter and typewriter code
+});
