@@ -1,0 +1,152 @@
+:root {
+  --ink: #3a1030;
+  --pink: #ff5fa2;
+  --blush: #ffe3ee;
+  --night: #120a2e;
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 22px;
+}
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  z-index: 0;
+}
+.hidden {
+  display: none !important;
+}
+
+/* Modal */
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(18, 10, 46, 0.55);
+}
+.box {
+  background: var(--blush);
+  border: 6px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--pink);
+  padding: 28px 24px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: pop 0.35s steps(5) both;
+}
+.box h1 {
+  font:
+    16px/1.7 "Press Start 2P",
+    "Courier New",
+    monospace;
+  margin: 0 0 22px;
+}
+.box h1 span {
+  color: #d6246e;
+}
+button {
+  font:
+    12px "Press Start 2P",
+    "Courier New",
+    monospace;
+  background: var(--pink);
+  color: #fff;
+  border: 4px solid var(--ink);
+  padding: 14px 22px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+button:focus-visible {
+  outline: 4px solid #ffe14d;
+  outline-offset: 3px;
+}
+
+/* Scene */
+#scene {
+  position: relative;
+  z-index: 5;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: max(24px, env(safe-area-inset-top)) 20px
+    max(24px, env(safe-area-inset-bottom));
+  flex-wrap: wrap;
+}
+#letter {
+  background: var(--blush);
+  border: 6px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--pink);
+  padding: 28px;
+  width: min(100%, 460px);
+  animation: pop 0.5s steps(6) both;
+}
+#letter h2 {
+  font:
+    14px/1.7 "Press Start 2P",
+    "Courier New",
+    monospace;
+  margin: 0 0 18px;
+}
+#msg {
+  margin: 0;
+  line-height: 1.25;
+  white-space: pre-wrap;
+  min-height: 8em;
+}
+#sig {
+  margin: 22px 0 0;
+  text-align: right;
+  font-size: 26px;
+  color: #d6246e;
+}
+#bouquet {
+  width: min(70vw, 270px);
+  image-rendering: pixelated;
+  animation: pop 0.5s 0.35s steps(6) both;
+  filter: drop-shadow(6px 6px 0 rgba(0, 0, 0, 0.35));
+}
+@keyframes pop {
+  from {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .box,
+  #letter,
+  #bouquet {
+    animation: none;
+  }
+}

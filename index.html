@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>A gift for you</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap"
+    />
+    <link rel="stylesheet" href="assets/css/stylesheet.css" />
+  </head>
+  <body>
+    <canvas id="bg" aria-hidden="true"></canvas>
+
+    <div id="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+      <div class="box">
+        <h1 id="mt"><span id="who"></span> sent you a gift</h1>
+        <button id="acceptBtn" type="button">Accept</button>
+      </div>
+    </div>
+
+    <main id="scene" class="hidden">
+      <article id="letter">
+        <h2 id="to"></h2>
+        <p id="msg"></p>
+        <p id="sig"></p>
+      </article>
+      <canvas
+        id="bouquet"
+        width="48"
+        height="64"
+        role="img"
+        aria-label="A pink bouquet of flowers"
+      ></canvas>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>
