@@ -275,34 +275,22 @@ $("acceptBtn").addEventListener("click", () => {
 });
 
 const bgm = $("bgm");
-const START = 2 * 60 + 3; // 2:05
-let started = false;
+const START = 2 * 60 + 10; // 2:10
 
-function startMusic() {
-  if (started) return;
-  const go = () => {
+function playMusic() {
+  const seekThenPlay = () => {
+    bgm.addEventListener("seeked", () => bgm.play().catch(() => {}), {
+      once: true,
+    });
     bgm.currentTime = START;
-    bgm
-      .play()
-      .then(() => {
-        started = true;
-        ["pointerdown", "keydown", "touchstart"].forEach((e) =>
-          removeEventListener(e, startMusic),
-        );
-      })
-      .catch(() => {}); // blocked: wait for the next interaction
   };
-  bgm.readyState >= 1
-    ? go()
-    : bgm.addEventListener("loadedmetadata", go, { once: true });
+  bgm.readyState >= 3
+    ? seekThenPlay()
+    : bgm.addEventListener("canplay", seekThenPlay, { once: true });
+  bgm.load(); // starts buffering if the file hasn't loaded yet
 }
 
 bgm.addEventListener("ended", () => {
   bgm.currentTime = START;
   bgm.play();
-});
-
-startMusic(); // try immediately on page open
-["pointerdown", "keydown", "touchstart"].forEach((e) =>
-  addEventListener(e, startMusic),
-);
+}); // loop back to 2:10
