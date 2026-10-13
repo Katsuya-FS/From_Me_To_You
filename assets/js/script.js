@@ -18,6 +18,11 @@ if (q.get("msg")) CONFIG.message = q.get("msg");
 
 const $ = (id) => document.getElementById(id);
 $("who").textContent = CONFIG.personName;
+const audio = new Audio("assets/audio/videoplayback.m4a");
+audio.addEventListener("ended", () => {
+  audio.currentTime = 123;
+  audio.play().catch(() => {});
+});
 
 /* ---------- Pixelated city + looping fireworks ---------- */
 const cv = $("bg"),
@@ -249,6 +254,8 @@ requestAnimationFrame(frame);
 
 /* ---------- Accept -> letter ---------- */
 $("acceptBtn").addEventListener("click", () => {
+  audio.currentTime = 123;
+  audio.play().catch(() => {});
   $("modal").classList.add("hidden");
   $("scene").classList.remove("hidden");
   $("to").textContent = "Dear " + CONFIG.recipient + ",";
@@ -266,3 +273,36 @@ $("acceptBtn").addEventListener("click", () => {
     if (i < text.length) setTimeout(type, 28);
   })();
 });
+
+const bgm = $("bgm");
+const START = 2 * 60 + 3; // 2:05
+let started = false;
+
+function startMusic() {
+  if (started) return;
+  const go = () => {
+    bgm.currentTime = START;
+    bgm
+      .play()
+      .then(() => {
+        started = true;
+        ["pointerdown", "keydown", "touchstart"].forEach((e) =>
+          removeEventListener(e, startMusic),
+        );
+      })
+      .catch(() => {}); // blocked: wait for the next interaction
+  };
+  bgm.readyState >= 1
+    ? go()
+    : bgm.addEventListener("loadedmetadata", go, { once: true });
+}
+
+bgm.addEventListener("ended", () => {
+  bgm.currentTime = START;
+  bgm.play();
+});
+
+startMusic(); // try immediately on page open
+["pointerdown", "keydown", "touchstart"].forEach((e) =>
+  addEventListener(e, startMusic),
+);
